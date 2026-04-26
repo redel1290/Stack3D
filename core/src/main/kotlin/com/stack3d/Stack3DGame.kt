@@ -296,8 +296,6 @@ class Stack3DGame : ApplicationAdapter() {
         val sd = d * zoom
         val sh = h * zoom
         
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
-        
         // Top face
         shapeRenderer.color = hslToRgb(colorHue, 0.7f, 0.6f)
         shapeRenderer.triangle(
@@ -338,8 +336,6 @@ class Stack3DGame : ApplicationAdapter() {
         
         shapeRenderer.triangle(lx1, ly1, lx2, ly2, lx3, ly3)
         shapeRenderer.triangle(lx1, ly1, lx3, ly3, lx4, ly4)
-        
-        shapeRenderer.end()
     }
     
     private fun hslToRgb(h: Float, s: Float, l: Float): Color {
@@ -371,6 +367,7 @@ class Stack3DGame : ApplicationAdapter() {
         batch.projectionMatrix = camera.combined
         
         // Малюємо блоки
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
         for (block in blocks) {
             drawCube(block.x, block.y, block.z, block.w, block.d, block.h, block.color, false)
         }
@@ -379,6 +376,14 @@ class Stack3DGame : ApplicationAdapter() {
         for (d in debris) {
             drawCube(d.x, d.y, d.z, d.w, d.d, blockHeight, d.color, false)
         }
+        
+        // Малюємо поточний блок
+        currentBlock?.let {
+            if (!gameOver) {
+                drawCube(it.x, it.y, it.z, it.w, it.d, it.h, it.color, true)
+            }
+        }
+        shapeRenderer.end()
         
         // Малюємо частинки
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled)
@@ -389,13 +394,6 @@ class Stack3DGame : ApplicationAdapter() {
             shapeRenderer.rect(px, py, p.size, p.size)
         }
         shapeRenderer.end()
-        
-        // Малюємо поточний блок
-        currentBlock?.let {
-            if (!gameOver) {
-                drawCube(it.x, it.y, it.z, it.w, it.d, it.h, it.color, true)
-            }
-        }
         
         // UI
         batch.begin()
