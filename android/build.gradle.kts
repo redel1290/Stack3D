@@ -39,11 +39,9 @@ android {
             excludes += "META-INF/LICENSE.txt"
             excludes += "META-INF/NOTICE"
             excludes += "META-INF/NOTICE.txt"
-            
-            pickFirsts += "lib/armeabi-v7a/libgdx.so"
-            pickFirsts += "lib/arm64-v8a/libgdx.so"
-            pickFirsts += "lib/x86/libgdx.so"
-            pickFirsts += "lib/x86_64/libgdx.so"
+        }
+        jniLibs {
+            useLegacyPackaging = true
         }
     }
 }
